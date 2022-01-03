@@ -1,0 +1,6 @@
+From: vela-noreply@fakemail.com
+To: emailone@email.com, emailtwo@email.com
+Subject: Vela Pipeline for {{ .VELA_REPO_FULL_NAME }} {{ .VELA_BUILD_BRANCH }}
+Content-Type: text/plain
+
+BuildAuthor:        {{ .VELA_BUILD_AUTHOR }}

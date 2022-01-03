@@ -1,0 +1,3 @@
+To:
+From:
+Subject: Vela Pipeline for {{ .VELA_REPO_FULL_NAME }} {{ .VELA_BUILD_BRANCH }}
