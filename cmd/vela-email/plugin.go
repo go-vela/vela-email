@@ -29,15 +29,14 @@ var (
 	// ErrorEmptyAttach is returned when the plugin finds the provided attachment to be empty.
 	ErrorEmptyAttach = errors.New("attachment provided is empty")
 
-	// ErrorMissingSmtpParam is returned when the plugin is missing a smtp host or port parameter.
-	ErrorMissingSmtpParam = errors.New("missing smtp parameter (host/port)")
+	// ErrorMissingSMTPParam is returned when the plugin is missing a smtp host or port parameter.
+	ErrorMissingSMTPParam = errors.New("missing smtp parameter (host/port)")
 
-	// ErrorMissingSmtpUsernameParam is returned when the plugin is missing the smtp username parameter.
-	ErrorMissingSmtpUsernameParam = errors.New("missing smtp username")
+	// ErrorMissingSMTPUsernameParam is returned when the plugin is missing smtp username parameter.
+	ErrorMissingSMTPUsernameParam = errors.New("missing smtp username")
 
-	// ErrorMissingSmtpPasswordParam is returned when the plugin is missing the smtp password parameter.
-	ErrorMissingSmtpPasswordParam = errors.New("missing smtp password")
-
+	// ErrorMissingSMTPPasswordParam is returned when the plugin is missing smtp password parameter.
+	ErrorMissingSMTPPasswordParam = errors.New("missing smtp password")
 )
 
 // Plugin represents the configuration loaded for the plugin.
@@ -48,9 +47,9 @@ type (
 		// Attachment arguments loaded for the plugin
 		Attachment *email.Attachment
 		// SmtpHost arguments loaded for the plugin
-		SmtpHost *SmtpHost
-		// TlsConfig arguments loaded for the plugin
-		TlsConfig *tls.Config
+		SMTPHost *SMTPHost
+		// TLSConfig arguments loaded for the plugin
+		TLSConfig *tls.Config
 		// SendType arguments loaded for the plugin
 		SendType string
 		// Auth arguments loaded for the plugin
@@ -61,15 +60,15 @@ type (
 		BuildEnv *BuildEnv
 	}
 
-	// SmtpHost struct
-	SmtpHost struct {
+	// SMTPHost struct.
+	SMTPHost struct {
 		Host     string
 		Port     string
 		Username string
 		Password string
 	}
 
-	// User friendly readable Build Environment Variables
+	// User friendly readable Build Environment Variables.
 	BuildEnv struct {
 		BuildCreated  string
 		BuildEnqueued string
@@ -87,7 +86,6 @@ func (p *Plugin) Validate() error {
 
 	logrus.Info("Validating Parameters...")
 	if len(p.Attachment.Filename) != 0 {
-
 		fileInfo, err := os.Stat(p.Attachment.Filename)
 		if errors.Is(err, os.ErrNotExist) {
 			return os.ErrNotExist
@@ -130,16 +128,16 @@ func (p *Plugin) Validate() error {
 		return ErrorMissingEmailFromParam
 	}
 
-	if len(p.SmtpHost.Host) == 0 || len(p.SmtpHost.Port) == 0 {
-		return ErrorMissingSmtpParam
-
-	}
-	if len(p.SmtpHost.Username) == 0 {
-		return ErrorMissingSmtpUsernameParam
+	if len(p.SMTPHost.Host) == 0 || len(p.SMTPHost.Port) == 0 {
+		return ErrorMissingSMTPParam
 	}
 
-	if len(p.SmtpHost.Password) == 0 {
-		return ErrorMissingSmtpPasswordParam
+	if len(p.SMTPHost.Username) == 0 {
+		return ErrorMissingSMTPUsernameParam
+	}
+
+	if len(p.SMTPHost.Password) == 0 {
+		return ErrorMissingSMTPPasswordParam
 	}
 
 	// set defaults
@@ -166,9 +164,9 @@ func (p *Plugin) Environment() map[string]string {
 	envMap := map[string]string{}
 
 	for _, v := range os.Environ() {
-		split_v := strings.Split(v, "=")
-		if strings.HasPrefix(split_v[0], "VELA_") {
-			envMap[split_v[0]] = strings.Join(split_v[1:], "=")
+		splitV := strings.Split(v, "=")
+		if strings.HasPrefix(splitV[0], "VELA_") {
+			envMap[splitV[0]] = strings.Join(splitV[1:], "=")
 		}
 	}
 
@@ -180,7 +178,7 @@ func (p *Plugin) Environment() map[string]string {
 	return envMap
 }
 
-// Execute
+// Execute.
 func (p *Plugin) Exec() error {
 	logrus.Trace("entered plugin.Execute")
 	defer logrus.Trace("exited plugin.Execute")
@@ -218,24 +216,24 @@ func (p *Plugin) Exec() error {
 	switch strings.ToLower(p.Auth) {
 	case "plainauth":
 		logrus.Info("Using login authentication from smtp/PlainAuth...")
-		auth = smtp.PlainAuth("", p.SmtpHost.Username, p.SmtpHost.Password, p.SmtpHost.Host)
+		auth = smtp.PlainAuth("", p.SMTPHost.Username, p.SMTPHost.Password, p.SMTPHost.Host)
 	case "loginauth":
 		fallthrough
 	default:
 		logrus.Info("Using login authentication from loginauth/LoginAuth...")
-		auth = LoginAuth(p.SmtpHost.Username, p.SmtpHost.Password)
+		auth = LoginAuth(p.SMTPHost.Username, p.SMTPHost.Password)
 	}
 
-	host := p.SmtpHost.Host + ":" + p.SmtpHost.Port
+	host := p.SMTPHost.Host + ":" + p.SMTPHost.Port
 	switch strings.ToLower(p.SendType) {
 	case "starttls":
 		logrus.Info("Sending email with StartTLS...")
-		if err := p.Email.SendWithStartTLS(host, auth, p.TlsConfig); err != nil {
+		if err := p.Email.SendWithStartTLS(host, auth, p.TLSConfig); err != nil {
 			return fmt.Errorf("error sending with StartTLS: %v", err)
 		}
 	case "tls":
 		logrus.Info("Sending email with TLS...")
-		if err := p.Email.SendWithTLS(host, auth, p.TlsConfig); err != nil {
+		if err := p.Email.SendWithTLS(host, auth, p.TLSConfig); err != nil {
 			return fmt.Errorf("error sending with TLS: %v", err)
 		}
 	case "plain":
@@ -266,7 +264,7 @@ func (p *Plugin) injectEnv(str string) (string, error) {
 	return buffer.String(), err
 }
 
-// splits a string of emails and returns them as a slice
+// splits a string of emails and returns them as a slice.
 func stringToSlice(s []string) []string {
 	var slice []string
 

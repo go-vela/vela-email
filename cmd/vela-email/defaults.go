@@ -5,10 +5,13 @@
 package main
 
 // the default subject returns the full repository name (org/repo), the branch and the build commit.
-const DefaultSubject = `{{ .VELA_REPO_FULL_NAME }} {{ .VELA_BUILD_BRANCH }} - {{ .VELA_BUILD_COMMIT }}`
+const DefaultSubject = `
+{{ .VELA_REPO_FULL_NAME }} {{ .VELA_BUILD_BRANCH }} - {{ .VELA_BUILD_COMMIT }}
+`
 
-// default html body returns the build link and build number, full repository name (org/repo), build author and email,
-// branch, build commit, build start time, and build commit message
+// default html body returns the build link and build number,
+// full repository name (org/repo), build author and email,
+// branch, build commit, build start time, and build commit message.
 const DefaultHTMLBody = `
 <table>
    <tbody>
@@ -23,7 +26,8 @@ const DefaultHTMLBody = `
                               <tbody>
                                  <tr>
                                     <td>Build Number:</td>
-                                    <td><a href="{{ .VELA_BUILD_LINK }}"> {{ .VELA_BUILD_NUMBER }} </a></td>
+                                    <td><a href="{{ .VELA_BUILD_LINK }}"> 
+                                    {{ .VELA_BUILD_NUMBER }} </a></td>
                                  </tr>
                                  <tr>
                                     <td>Repo:</td>
@@ -31,7 +35,8 @@ const DefaultHTMLBody = `
                                  </tr>
                                  <tr>
                                     <td>Author:</td>
-                                    <td>{{ .VELA_BUILD_AUTHOR }} ({{ .VELA_BUILD_AUTHOR_EMAIL }})</td>
+                                    <td>{{ .VELA_BUILD_AUTHOR }}
+                                     ({{ .VELA_BUILD_AUTHOR_EMAIL }})</td>
                                  </tr>
                                  <tr>
                                     <td>Branch:</td>

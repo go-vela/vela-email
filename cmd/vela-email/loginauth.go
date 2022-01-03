@@ -2,8 +2,8 @@
 //
 // Use of this source code is governed by the LICENSE file in this repository.
 
-// AUTH LOGIN is not built into go std lib smtp. This helps with smtp hosts such as O365 and Exchange
-// that uses AUTH LOGIN
+// AUTH LOGIN is not built into go std lib smtp.
+// This helps with smtp hosts such as O365 and Exchange that uses AUTH LOGIN
 package main
 
 import (
@@ -16,7 +16,7 @@ type loginAuth struct {
 	username, password string
 }
 
-// LoginAuth returns an Auth that implements Auth Login authentication mechanism
+// LoginAuth returns an Auth that implements Auth Login authentication mechanism.
 func LoginAuth(username, password string) smtp.Auth {
 	return &loginAuth{username, password}
 }

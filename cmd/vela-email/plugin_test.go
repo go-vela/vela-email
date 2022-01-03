@@ -19,7 +19,7 @@ var (
 		From: "two@mail.com",
 	}
 
-	mockSMTPHost = &SmtpHost{
+	mockSMTPHost = &SMTPHost{
 		Host:     "smtphost.com",
 		Port:     "587",
 		Username: "username",
@@ -38,7 +38,7 @@ var (
 
 	mockPlugin = &Plugin{
 		Email:      mockEmail,
-		SmtpHost:   mockSMTPHost,
+		SMTPHost:   mockSMTPHost,
 		Attachment: noAttachment,
 		BuildEnv:   mockBuildEnv,
 	}
@@ -68,7 +68,7 @@ func TestValidateSuccess(t *testing.T) {
 			name: "return no errors: single To email",
 			parameters: Plugin{
 				Email:      mockEmail,
-				SmtpHost:   mockSMTPHost,
+				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 			},
 		},
@@ -79,7 +79,7 @@ func TestValidateSuccess(t *testing.T) {
 					To:   []string{"one@gmail.com", "two@comcast.net"},
 					From: "three@email.com",
 				},
-				SmtpHost:   mockSMTPHost,
+				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 			},
 		},
@@ -98,7 +98,7 @@ func TestValidateSuccess(t *testing.T) {
 					Sender:      "sender",
 					ReadReceipt: []string{"idk"},
 				},
-				SmtpHost:   mockSMTPHost,
+				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 			},
 		},
@@ -109,7 +109,7 @@ func TestValidateSuccess(t *testing.T) {
 					To:   []string{""},
 					From: "",
 				},
-				SmtpHost: mockSMTPHost,
+				SMTPHost: mockSMTPHost,
 				Attachment: &email.Attachment{
 					Filename: "testdata/example1.txt",
 				},
@@ -159,7 +159,7 @@ func TestValidateErrors(t *testing.T) {
 					To:   []string{""},
 					From: "",
 				},
-				SmtpHost: mockSMTPHost,
+				SMTPHost: mockSMTPHost,
 				Attachment: &email.Attachment{
 					Filename: "testdata/badattachment.txt",
 				},
@@ -188,48 +188,48 @@ func TestValidateErrors(t *testing.T) {
 			name: "SMTP host missing",
 			parameters: Plugin{
 				Email: mockEmail,
-				SmtpHost: &SmtpHost{
+				SMTPHost: &SMTPHost{
 					Port: "1902",
 				},
 				Attachment: noAttachment,
 			},
-			wantErr: ErrorMissingSmtpParam,
+			wantErr: ErrorMissingSMTPParam,
 		},
 		{
 			name: "SMTP port missing",
 			parameters: Plugin{
 				Email: mockEmail,
-				SmtpHost: &SmtpHost{
+				SMTPHost: &SMTPHost{
 					Host: "smtphost.com",
 				},
 				Attachment: noAttachment,
 			},
-			wantErr: ErrorMissingSmtpParam,
+			wantErr: ErrorMissingSMTPParam,
 		},
 		{
 			name: "SMTP username missing",
 			parameters: Plugin{
 				Email: mockEmail,
-				SmtpHost: &SmtpHost{
+				SMTPHost: &SMTPHost{
 					Host: "smtphost.com",
 					Port: "1902",
 				},
 				Attachment: noAttachment,
 			},
-			wantErr: ErrorMissingSmtpUsernameParam,
+			wantErr: ErrorMissingSMTPUsernameParam,
 		},
 		{
 			name: "SMTP password missing",
 			parameters: Plugin{
 				Email: mockEmail,
-				SmtpHost: &SmtpHost{
+				SMTPHost: &SMTPHost{
 					Host:     "smtphost.com",
 					Port:     "1902",
 					Username: "username",
 				},
 				Attachment: noAttachment,
 			},
-			wantErr: ErrorMissingSmtpPasswordParam,
+			wantErr: ErrorMissingSMTPPasswordParam,
 		},
 	}
 
@@ -262,7 +262,7 @@ func TestInjectEnvSuccess(t *testing.T) {
 					Subject: DefaultSubject,
 					Text:    []byte("This is some text for repo: {{ .VELA_REPO_FULL_NAME }}"),
 				},
-				SmtpHost:   mockSMTPHost,
+				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 				BuildEnv:   mockBuildEnv,
 			},
@@ -276,7 +276,7 @@ func TestInjectEnvSuccess(t *testing.T) {
 					Subject: "Commit failure on vela build: {{ .VELA_BUILD_NUMBER }}",
 					Text:    []byte("This is some text for repo: {{ .VELA_REPO_FULL_NAME }}"),
 				},
-				SmtpHost:   mockSMTPHost,
+				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 				BuildEnv:   mockBuildEnv,
 			},
@@ -313,13 +313,11 @@ func TestInjectEnvSuccess(t *testing.T) {
 			if strings.Contains(body, "<no value>") {
 				t.Errorf("InjectEnv(body) failed to inject all environment variables %s", body)
 			}
-
 		})
 	}
 }
 
 func TestInjectEnvBadVar(t *testing.T) {
-
 	tests := []struct {
 		name       string
 		parameters Plugin
@@ -332,7 +330,7 @@ func TestInjectEnvBadVar(t *testing.T) {
 					From:    "three@email.com",
 					Subject: "This is a bad subject {{ .SOME_OTHER_VARIABLE }}",
 				},
-				SmtpHost:   mockSMTPHost,
+				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 				BuildEnv:   mockBuildEnv,
 			},
@@ -356,10 +354,8 @@ func TestInjectEnvBadVar(t *testing.T) {
 			}
 
 			if strings.Contains(subject, "check") {
-				t.Errorf("InjectEnv(subject) should not have have injected variable: SOME_OTHER_VARIABLE, but did")
+				t.Errorf("InjectEnv(subject) shouldn't have injected variable: SOME_OTHER_VARIABLE, but did")
 			}
-
 		})
 	}
-
 }

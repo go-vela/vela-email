@@ -135,7 +135,7 @@ func main() {
 				Name:    "filename",
 				Usage:   "file to attach to email",
 			},
-			// TlsConfig flag
+			// TLSConfig flag
 			&cli.BoolFlag{
 				EnvVars: []string{"PARAMETER_SKIPVERIFY", "EMAIL_SKIPVERIFY"},
 				Name:    "skipverify",
@@ -250,7 +250,7 @@ func run(c *cli.Context) error {
 		},
 
 		// smtp configuration
-		SmtpHost: &SmtpHost{
+		SMTPHost: &SMTPHost{
 			Host:     c.String("host"),
 			Port:     c.String("port"),
 			Username: c.String("username"),
@@ -258,9 +258,9 @@ func run(c *cli.Context) error {
 		},
 
 		// tls configuration
-		TlsConfig: &tls.Config{
+		TLSConfig: &tls.Config{
 			ServerName:         c.String("host"),
-			InsecureSkipVerify: c.Bool("skipverify"),
+			InsecureSkipVerify: c.Bool("skipverify"), //nolint:gosec // ignore false positive
 		},
 
 		// User Friendly Build configuration
