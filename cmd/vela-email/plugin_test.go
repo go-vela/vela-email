@@ -15,8 +15,8 @@ import (
 
 var (
 	mockEmail = &email.Email{
-		To: 	[]string{"one@mail.com"},
-		From: 	"two@mail.com",
+		To:   []string{"one@mail.com"},
+		From: "two@mail.com",
 	}
 
 	mockSMTPHost = &SmtpHost{
@@ -24,26 +24,24 @@ var (
 		Port:     "587",
 		Username: "username",
 		Password: "password",
-	}	
+	}
 	noAttachment = &email.Attachment{
 		Filename: "",
 	}
 
 	mockBuildEnv = &BuildEnv{
-		BuildCreated:   time.Unix(int64(1556720958), 0).UTC().String(),
-		BuildEnqueued:  time.Unix(int64(1556720958), 0).UTC().String(),
-		BuildFinished:  time.Unix(int64(1556720958), 0).UTC().String(),
-		BuildStarted:   time.Unix(int64(1556720958), 0).UTC().String(),
+		BuildCreated:  time.Unix(int64(1556720958), 0).UTC().String(),
+		BuildEnqueued: time.Unix(int64(1556720958), 0).UTC().String(),
+		BuildFinished: time.Unix(int64(1556720958), 0).UTC().String(),
+		BuildStarted:  time.Unix(int64(1556720958), 0).UTC().String(),
 	}
 
 	mockPlugin = &Plugin{
-		Email: mockEmail,
-		SmtpHost: mockSMTPHost,
+		Email:      mockEmail,
+		SmtpHost:   mockSMTPHost,
 		Attachment: noAttachment,
-		BuildEnv: mockBuildEnv,
-
+		BuildEnv:   mockBuildEnv,
 	}
-
 )
 
 func createMockEnv() {
@@ -58,19 +56,19 @@ func createMockEnv() {
 	os.Setenv("VELA_BUILD_LINK", "https://vela-server.localhost/octocat/hello-world/1")
 	os.Setenv("VELA_BUILD_MESSAGE", "Merge pull request #6 from octocat/patch-1")
 	os.Setenv("VELA_BUILD_NUMBER", "1")
-	os.Setenv("VELA_REPO_FULL_NAME", "octocat/hello-world")	
+	os.Setenv("VELA_REPO_FULL_NAME", "octocat/hello-world")
 }
 
 func TestValidateSuccess(t *testing.T) {
 	tests := []struct {
-		name 		string
-		parameters 	Plugin
+		name       string
+		parameters Plugin
 	}{
 		{
 			name: "return no errors: single To email",
 			parameters: Plugin{
-				Email: mockEmail,
-				SmtpHost: mockSMTPHost,
+				Email:      mockEmail,
+				SmtpHost:   mockSMTPHost,
 				Attachment: noAttachment,
 			},
 		},
@@ -78,29 +76,29 @@ func TestValidateSuccess(t *testing.T) {
 			name: "return no errors: multiple To emails",
 			parameters: Plugin{
 				Email: &email.Email{
-					To: 	[]string{"one@gmail.com", "two@comcast.net"},
-					From: 	"three@email.com",
+					To:   []string{"one@gmail.com", "two@comcast.net"},
+					From: "three@email.com",
 				},
-				SmtpHost: mockSMTPHost,	
-				Attachment: noAttachment,	
+				SmtpHost:   mockSMTPHost,
+				Attachment: noAttachment,
 			},
 		},
 		{
 			name: "return no errors: extra email parameters",
 			parameters: Plugin{
 				Email: &email.Email{
-					To: 	 		[]string{"one@gmail.com", "two@comcast.net"},
-					From: 	 		"three@email.com",
-					ReplyTo: 		[]string{"first.last@email.com"},
-					Bcc:	 		[]string{"first.last@email.com"},
-					Cc: 	 		[]string{"first.last@email.com"},
-					Subject: 		"subject",
-					Text: 	 		[]byte(""),
-					HTML: 	 		[]byte(""),
-					Sender: 		"sender",
-					ReadReceipt: 	[]string{"idk"},
+					To:          []string{"one@gmail.com", "two@comcast.net"},
+					From:        "three@email.com",
+					ReplyTo:     []string{"first.last@email.com"},
+					Bcc:         []string{"first.last@email.com"},
+					Cc:          []string{"first.last@email.com"},
+					Subject:     "subject",
+					Text:        []byte(""),
+					HTML:        []byte(""),
+					Sender:      "sender",
+					ReadReceipt: []string{"idk"},
 				},
-				SmtpHost: mockSMTPHost,
+				SmtpHost:   mockSMTPHost,
 				Attachment: noAttachment,
 			},
 		},
@@ -108,8 +106,8 @@ func TestValidateSuccess(t *testing.T) {
 			name: "return no errors: parameters from attachment",
 			parameters: Plugin{
 				Email: &email.Email{
-					To: 	[]string{""},
-					From: 	"",
+					To:   []string{""},
+					From: "",
 				},
 				SmtpHost: mockSMTPHost,
 				Attachment: &email.Attachment{
@@ -130,15 +128,15 @@ func TestValidateSuccess(t *testing.T) {
 
 func TestValidateErrors(t *testing.T) {
 	tests := []struct {
-		name 		string
-		parameters 	Plugin
-		wantErr 	error
+		name       string
+		parameters Plugin
+		wantErr    error
 	}{
 		{
 			name: "To missing",
 			parameters: Plugin{
 				Email: &email.Email{
-					From: 	"two@email.com",
+					From: "two@email.com",
 				},
 				Attachment: noAttachment,
 			},
@@ -148,7 +146,7 @@ func TestValidateErrors(t *testing.T) {
 			name: "From missing",
 			parameters: Plugin{
 				Email: &email.Email{
-					To: 	[]string{"one@email.com"},
+					To: []string{"one@email.com"},
 				},
 				Attachment: noAttachment,
 			},
@@ -158,14 +156,13 @@ func TestValidateErrors(t *testing.T) {
 			name: "Email parameters missing from attachment",
 			parameters: Plugin{
 				Email: &email.Email{
-					To: 	[]string{""},
-					From: 	"",
+					To:   []string{""},
+					From: "",
 				},
 				SmtpHost: mockSMTPHost,
 				Attachment: &email.Attachment{
 					Filename: "testdata/badattachment.txt",
 				},
-
 			},
 			wantErr: io.EOF,
 		},
@@ -192,7 +189,7 @@ func TestValidateErrors(t *testing.T) {
 			parameters: Plugin{
 				Email: mockEmail,
 				SmtpHost: &SmtpHost{
-					Port:     "1902",
+					Port: "1902",
 				},
 				Attachment: noAttachment,
 			},
@@ -203,7 +200,7 @@ func TestValidateErrors(t *testing.T) {
 			parameters: Plugin{
 				Email: mockEmail,
 				SmtpHost: &SmtpHost{
-					Host:     "smtphost.com",
+					Host: "smtphost.com",
 				},
 				Attachment: noAttachment,
 			},
@@ -214,8 +211,8 @@ func TestValidateErrors(t *testing.T) {
 			parameters: Plugin{
 				Email: mockEmail,
 				SmtpHost: &SmtpHost{
-					Host:     "smtphost.com",
-					Port:     "1902",
+					Host: "smtphost.com",
+					Port: "1902",
 				},
 				Attachment: noAttachment,
 			},
@@ -237,10 +234,10 @@ func TestValidateErrors(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T){
+		t.Run(test.name, func(t *testing.T) {
 			if err := test.parameters.Validate(); err == nil {
 				t.Errorf("Validate() should have raised an error")
-			}else if (err != test.wantErr) {
+			} else if err != test.wantErr {
 				t.Errorf("Validate() error = %v, wantErr = %v", err, test.wantErr)
 			}
 		})
@@ -249,39 +246,39 @@ func TestValidateErrors(t *testing.T) {
 
 func TestInjectEnvSuccess(t *testing.T) {
 	tests := []struct {
-		name		string
-		parameters	Plugin
+		name       string
+		parameters Plugin
 	}{
 		{
-			name: "email using empty subject and html",
+			name:       "email using empty subject and html",
 			parameters: *mockPlugin,
 		},
 		{
 			name: "email using default subject and user text",
-			parameters: Plugin {
+			parameters: Plugin{
 				Email: &email.Email{
-					To: 	 []string{"one@gmail.com", "two@comcast.net"},
-					From: 	 "three@email.com",
-					Subject:  DefaultSubject,
-					Text:	  []byte("This is some text for repo: {{ .VELA_REPO_FULL_NAME }}"),
+					To:      []string{"one@gmail.com", "two@comcast.net"},
+					From:    "three@email.com",
+					Subject: DefaultSubject,
+					Text:    []byte("This is some text for repo: {{ .VELA_REPO_FULL_NAME }}"),
 				},
-				SmtpHost: mockSMTPHost,
+				SmtpHost:   mockSMTPHost,
 				Attachment: noAttachment,
-				BuildEnv: mockBuildEnv,
+				BuildEnv:   mockBuildEnv,
 			},
 		},
 		{
 			name: "email using user subject and html",
-			parameters: Plugin {
+			parameters: Plugin{
 				Email: &email.Email{
-					To: 	 []string{"one@gmail.com", "two@comcast.net"},
-					From: 	 "three@email.com",
-					Subject:  "Commit failure on vela build: {{ .VELA_BUILD_NUMBER }}",
-					Text:	  []byte("This is some text for repo: {{ .VELA_REPO_FULL_NAME }}"),
+					To:      []string{"one@gmail.com", "two@comcast.net"},
+					From:    "three@email.com",
+					Subject: "Commit failure on vela build: {{ .VELA_BUILD_NUMBER }}",
+					Text:    []byte("This is some text for repo: {{ .VELA_REPO_FULL_NAME }}"),
 				},
-				SmtpHost: mockSMTPHost,
+				SmtpHost:   mockSMTPHost,
 				Attachment: noAttachment,
-				BuildEnv: mockBuildEnv,
+				BuildEnv:   mockBuildEnv,
 			},
 		},
 	}
@@ -293,7 +290,7 @@ func TestInjectEnvSuccess(t *testing.T) {
 				t.FailNow()
 			}
 			createMockEnv()
-			test.parameters.Env = test.parameters.Environment()	
+			test.parameters.Env = test.parameters.Environment()
 			subject, err := test.parameters.injectEnv(test.parameters.Email.Subject)
 			if err != nil {
 				t.Errorf("InjectEnv(subject) should not have raised an error %s", err)
@@ -302,13 +299,13 @@ func TestInjectEnvSuccess(t *testing.T) {
 			if strings.Contains(subject, "<no value>") {
 				t.Errorf("InjectEnv(subject) failed to inject all environment variables %s", subject)
 			}
-			
+
 			var body string
 			if len(test.parameters.Email.HTML) == 0 {
 				body, err = test.parameters.injectEnv(string(test.parameters.Email.HTML))
-			}else{
+			} else {
 				body, err = test.parameters.injectEnv(string(test.parameters.Email.Text))
-			}		
+			}
 			if err != nil {
 				t.Errorf("InjectEnv(body) should not have raised an error %s", err)
 				t.FailNow()
@@ -324,20 +321,20 @@ func TestInjectEnvSuccess(t *testing.T) {
 func TestInjectEnvBadVar(t *testing.T) {
 
 	tests := []struct {
-		name		string
-		parameters	Plugin
+		name       string
+		parameters Plugin
 	}{
 		{
 			name: "error: using environment variable that doesnt exist",
-			parameters: Plugin {
+			parameters: Plugin{
 				Email: &email.Email{
-					To: 	 []string{"one@gmail.com", "two@comcast.net"},
-					From: 	 "three@email.com",
-					Subject:  "This is a bad subject {{ .SOME_OTHER_VARIABLE }}",
+					To:      []string{"one@gmail.com", "two@comcast.net"},
+					From:    "three@email.com",
+					Subject: "This is a bad subject {{ .SOME_OTHER_VARIABLE }}",
 				},
-				SmtpHost: mockSMTPHost,
+				SmtpHost:   mockSMTPHost,
 				Attachment: noAttachment,
-				BuildEnv: mockBuildEnv,
+				BuildEnv:   mockBuildEnv,
 			},
 		},
 	}
@@ -350,7 +347,7 @@ func TestInjectEnvBadVar(t *testing.T) {
 			}
 			createMockEnv()
 			os.Setenv("SOME_OTHER_VARIABLE", "check")
-			test.parameters.Env = test.parameters.Environment()	
+			test.parameters.Env = test.parameters.Environment()
 			subject, err := test.parameters.injectEnv(test.parameters.Email.Subject)
 
 			if err != nil {
@@ -364,6 +361,5 @@ func TestInjectEnvBadVar(t *testing.T) {
 
 		})
 	}
-	
 
 }

@@ -40,7 +40,6 @@ var (
 
 	// ErrorParsingTemplate is returned when the plugin cannot parse the body of the text, either html or text.
 	ErrorParsingTemplate = errors.New("error parsing body of email")
-
 )
 
 // Plugin represents the configuration loaded for the plugin.
@@ -81,7 +80,7 @@ type (
 	}
 )
 
-// Validate checks the plugin parameters needed from the 
+// Validate checks the plugin parameters needed from the
 // user are provided. If the email subject or HTML/text are
 // not provided, defaults are set.
 func (p *Plugin) Validate() error {
@@ -91,7 +90,7 @@ func (p *Plugin) Validate() error {
 	logrus.Info("Validating Parameters...")
 	if len(p.Attachment.Filename) != 0 {
 
-		fileInfo, err := os.Stat(p.Attachment.Filename);
+		fileInfo, err := os.Stat(p.Attachment.Filename)
 		if errors.Is(err, os.ErrNotExist) {
 			return os.ErrNotExist
 		}
@@ -101,13 +100,13 @@ func (p *Plugin) Validate() error {
 		}
 
 		// Don't check email's errors
-		file, err := os.Open(p.Attachment.Filename) 
+		file, err := os.Open(p.Attachment.Filename)
 		if err != nil {
 			return err
 		}
 
 		// Don't check email's errors
-		p.Email, err = email.NewEmailFromReader(file);
+		p.Email, err = email.NewEmailFromReader(file)
 		if err != nil {
 			return err
 		}
@@ -122,13 +121,13 @@ func (p *Plugin) Validate() error {
 
 		if len(p.Email.Bcc) > 0 {
 			p.Email.Bcc = stringToSlice(p.Email.Bcc)
-		}	
+		}
 	}
 
 	if len(p.Email.To) == 0 {
 		return ErrorMissingEmailToParam
 	}
-	
+
 	if len(p.Email.From) == 0 {
 		return ErrorMissingEmailFromParam
 	}
@@ -148,12 +147,12 @@ func (p *Plugin) Validate() error {
 	// set defaults
 	if len(p.Email.Subject) == 0 {
 		p.Email.Subject = DefaultSubject
-	} 
+	}
 
 	if len(p.Email.HTML) == 0 && len(p.Email.Text) == 0 {
 		p.Email.HTML = []byte(DefaultHTMLBody)
 	}
-	
+
 	return nil
 }
 
@@ -183,8 +182,8 @@ func (p *Plugin) Environment() map[string]string {
 	return envMap
 }
 
-// Execute 
-func (p *Plugin) Exec () error {
+// Execute
+func (p *Plugin) Exec() error {
 	logrus.Trace("entered plugin.Execute")
 	defer logrus.Trace("exited plugin.Execute")
 
@@ -208,7 +207,7 @@ func (p *Plugin) Exec () error {
 			return err
 		}
 		p.Email.HTML = []byte(body)
-	}else {
+	} else {
 		logrus.Info("Parsing Text...")
 		body, err := p.injectEnv(string(p.Email.Text))
 		if err != nil {
@@ -250,10 +249,9 @@ func (p *Plugin) Exec () error {
 		}
 	}
 
-	logrus.Info("Plugin finished")	
+	logrus.Info("Plugin finished")
 	return nil
 }
-
 
 func (p *Plugin) injectEnv(str string) (string, error) {
 	logrus.Trace("entered plugin.InjectEnv")
@@ -266,12 +264,12 @@ func (p *Plugin) injectEnv(str string) (string, error) {
 	t := template.Must(template.New("input").Parse(str))
 
 	err := t.Execute(buffer, p.Env)
-	
+
 	return buffer.String(), err
 }
 
 // splits a string of emails and returns them as a slice
-func stringToSlice(s []string) ([]string) {
+func stringToSlice(s []string) []string {
 	var slice []string
 
 	if len(s) == 0 {

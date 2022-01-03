@@ -17,9 +17,7 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-
-
-func main(){
+func main() {
 	// capture application version information
 	pluginVersion := version.New()
 
@@ -44,9 +42,9 @@ func main(){
 				Email: "vela@target.com",
 			},
 		},
-		Action: run,
+		Action:   run,
 		Compiled: time.Now(),
-		Version: pluginVersion.Semantic(),
+		Version:  pluginVersion.Semantic(),
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				EnvVars:  []string{"PARAMETER_LOG_LEVEL", "EMAIL_LOG_LEVEL"},
@@ -107,28 +105,28 @@ func main(){
 			},
 			// SmtpHost flags
 			&cli.StringFlag{
-				EnvVars: []string{"PARAMETER_HOST", "EMAIL_HOST"},
-				Name:    "host",
-				Usage:   "smtp host",
+				EnvVars:  []string{"PARAMETER_HOST", "EMAIL_HOST"},
+				Name:     "host",
+				Usage:    "smtp host",
 				Required: true,
 			},
 			&cli.StringFlag{
-				EnvVars: []string{"PARAMETER_PORT", "EMAIL_PORT"},
-				Name:    "port",
-				Usage:   "smtp port",
+				EnvVars:  []string{"PARAMETER_PORT", "EMAIL_PORT"},
+				Name:     "port",
+				Usage:    "smtp port",
 				Required: true,
 			},
 			&cli.StringFlag{
-				EnvVars: []string{"PARAMETER_USERNAME", "USERNAME"},
+				EnvVars:  []string{"PARAMETER_USERNAME", "USERNAME"},
 				FilePath: "/vela/parameters/email/username,/vela/secrets/email/username",
-				Name:    "username",
-				Usage:   "smtp host username",
+				Name:     "username",
+				Usage:    "smtp host username",
 			},
 			&cli.StringFlag{
-				EnvVars: []string{"PARAMETER_PASSWORD", "PASSWORD"},
+				EnvVars:  []string{"PARAMETER_PASSWORD", "PASSWORD"},
 				FilePath: "/vela/parameters/email/username,/vela/secrets/email/username",
-				Name:    "password",
-				Usage:   "smtp host password",
+				Name:     "password",
+				Usage:    "smtp host password",
 			},
 			// Attachment flag
 			&cli.StringFlag{
@@ -265,7 +263,7 @@ func run(c *cli.Context) error {
 		},
 
 		// User Friendly Build configuration
-		BuildEnv:  &BuildEnv{
+		BuildEnv: &BuildEnv{
 			BuildCreated:  time.Unix(int64(c.Int("build-created")), 0).UTC().String(),
 			BuildEnqueued: time.Unix(int64(c.Int("build-enqueued")), 0).UTC().String(),
 			BuildFinished: time.Unix(int64(c.Int("build-finished")), 0).UTC().String(),
@@ -284,4 +282,3 @@ func run(c *cli.Context) error {
 	// execute the plugin
 	return p.Exec()
 }
-
