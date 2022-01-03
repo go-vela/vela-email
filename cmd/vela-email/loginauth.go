@@ -11,7 +11,7 @@ import (
 	"net/smtp"
 )
 
-// loginAuth struct contains username and password for login authentication
+// loginAuth struct contains username and password for login authentication.
 type loginAuth struct {
 	username, password string
 }

@@ -17,8 +17,9 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+//nolint:funlen // ignore false positive
 func main() {
-	// capture application version information
+	// capture application version information.
 	pluginVersion := version.New()
 
 	// serialize the version information as pretty JSON

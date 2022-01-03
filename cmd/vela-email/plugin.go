@@ -38,8 +38,6 @@ var (
 	// ErrorMissingSmtpPasswordParam is returned when the plugin is missing the smtp password parameter.
 	ErrorMissingSmtpPasswordParam = errors.New("missing smtp password")
 
-	// ErrorParsingTemplate is returned when the plugin cannot parse the body of the text, either html or text.
-	ErrorParsingTemplate = errors.New("error parsing body of email")
 )
 
 // Plugin represents the configuration loaded for the plugin.

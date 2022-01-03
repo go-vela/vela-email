@@ -4,7 +4,7 @@
 
 package main
 
-// the default subject returns the full repository name (org/repo), the branch and the build commit
+// the default subject returns the full repository name (org/repo), the branch and the build commit.
 const DefaultSubject = `{{ .VELA_REPO_FULL_NAME }} {{ .VELA_BUILD_BRANCH }} - {{ .VELA_BUILD_COMMIT }}`
 
 // default html body returns the build link and build number, full repository name (org/repo), build author and email,
