@@ -145,15 +145,14 @@ func main() {
 			&cli.StringFlag{
 				EnvVars: []string{"PARAMETER_SENDTYPE", "EMAIL_SENDTYPE"},
 				Name:    "sendtype",
-				Usage:   "send type options: (Plain|StartTLS|TLS) default is set to plain",
+				Usage:   "send type options: (Plain|StartTLS|TLS) default is set to StartTLS",
 				Value:   "StartTLS",
 			},
 			// Auth flag
 			&cli.StringFlag{
 				EnvVars: []string{"PARAMETER_AUTH", "EMAIL_AUTH"},
 				Name:    "auth",
-				Usage:   "authentication for login type (PlainAuth|LoginAuth) default is set to LoginAuth",
-				Value:   "LoginAuth",
+				Usage:   "authentication for login type (PlainAuth|LoginAuth) default is set to nil",
 			},
 			// Build Flags
 			&cli.IntFlag{

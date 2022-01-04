@@ -31,12 +31,6 @@ var (
 
 	// ErrorMissingSMTPParam is returned when the plugin is missing a smtp host or port parameter.
 	ErrorMissingSMTPParam = errors.New("missing smtp parameter (host/port)")
-
-	// ErrorMissingSMTPUsernameParam is returned when the plugin is missing smtp username parameter.
-	ErrorMissingSMTPUsernameParam = errors.New("missing smtp username")
-
-	// ErrorMissingSMTPPasswordParam is returned when the plugin is missing smtp password parameter.
-	ErrorMissingSMTPPasswordParam = errors.New("missing smtp password")
 )
 
 // Plugin represents the configuration loaded for the plugin.
@@ -95,13 +89,11 @@ func (p *Plugin) Validate() error {
 			return ErrorEmptyAttach
 		}
 
-		// Don't check email's errors
 		file, err := os.Open(p.Attachment.Filename)
 		if err != nil {
 			return err
 		}
 
-		// Don't check email's errors
 		p.Email, err = email.NewEmailFromReader(file)
 		if err != nil {
 			return err
@@ -130,14 +122,6 @@ func (p *Plugin) Validate() error {
 
 	if len(p.SMTPHost.Host) == 0 || len(p.SMTPHost.Port) == 0 {
 		return ErrorMissingSMTPParam
-	}
-
-	if len(p.SMTPHost.Username) == 0 {
-		return ErrorMissingSMTPUsernameParam
-	}
-
-	if len(p.SMTPHost.Password) == 0 {
-		return ErrorMissingSMTPPasswordParam
 	}
 
 	// set defaults
@@ -178,7 +162,9 @@ func (p *Plugin) Environment() map[string]string {
 	return envMap
 }
 
-// Execute.
+// Parses subject and body of email to inject environment
+// variables. Uses provided authentication type and send type
+// to send the email.
 func (p *Plugin) Exec() error {
 	logrus.Trace("entered plugin.Execute")
 	defer logrus.Trace("exited plugin.Execute")
@@ -196,7 +182,6 @@ func (p *Plugin) Exec() error {
 		if err != nil {
 			return err
 		}
-		// TODO: do we care about a css error?
 		logrus.Info("Parsing CSS...")
 		body, err = inliner.Inline(body)
 		if err != nil {
@@ -218,10 +203,11 @@ func (p *Plugin) Exec() error {
 		logrus.Info("Using login authentication from smtp/PlainAuth...")
 		auth = smtp.PlainAuth("", p.SMTPHost.Username, p.SMTPHost.Password, p.SMTPHost.Host)
 	case "loginauth":
-		fallthrough
-	default:
 		logrus.Info("Using login authentication from loginauth/LoginAuth...")
 		auth = LoginAuth(p.SMTPHost.Username, p.SMTPHost.Password)
+	default:
+		logrus.Info("Using no login authentication...")
+		auth = nil
 	}
 
 	host := p.SMTPHost.Host + ":" + p.SMTPHost.Port
@@ -249,6 +235,7 @@ func (p *Plugin) Exec() error {
 	return nil
 }
 
+// Injects environment variables into email template.
 func (p *Plugin) injectEnv(str string) (string, error) {
 	logrus.Trace("entered plugin.InjectEnv")
 	defer logrus.Trace("exited plugin.InjectEnv")

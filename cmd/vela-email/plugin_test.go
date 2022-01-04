@@ -84,6 +84,20 @@ func TestValidateSuccess(t *testing.T) {
 			},
 		},
 		{
+			name: "return no errors: no username or password",
+			parameters: Plugin{
+				Email: &email.Email{
+					To:   []string{"one@gmail.com", "two@comcast.net"},
+					From: "three@email.com",
+				},
+				SMTPHost: &SMTPHost{
+					Host: "smtphost.com",
+					Port: "587",
+				},
+				Attachment: noAttachment,
+			},
+		},
+		{
 			name: "return no errors: extra email parameters",
 			parameters: Plugin{
 				Email: &email.Email{
@@ -205,31 +219,6 @@ func TestValidateErrors(t *testing.T) {
 				Attachment: noAttachment,
 			},
 			wantErr: ErrorMissingSMTPParam,
-		},
-		{
-			name: "SMTP username missing",
-			parameters: Plugin{
-				Email: mockEmail,
-				SMTPHost: &SMTPHost{
-					Host: "smtphost.com",
-					Port: "1902",
-				},
-				Attachment: noAttachment,
-			},
-			wantErr: ErrorMissingSMTPUsernameParam,
-		},
-		{
-			name: "SMTP password missing",
-			parameters: Plugin{
-				Email: mockEmail,
-				SMTPHost: &SMTPHost{
-					Host:     "smtphost.com",
-					Port:     "1902",
-					Username: "username",
-				},
-				Attachment: noAttachment,
-			},
-			wantErr: ErrorMissingSMTPPasswordParam,
 		},
 	}
 
