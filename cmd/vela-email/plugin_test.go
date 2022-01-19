@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Target Brands, Inc. All rights reserved.
+// Copyright (c) 2022 Target Brands, Inc. All rights reserved.
 //
 // Use of this source code is governed by the LICENSE file in this repository.
 package main
@@ -15,8 +15,8 @@ import (
 
 var (
 	mockEmail = &email.Email{
-		To:   []string{"one@mail.com"},
-		From: "two@mail.com",
+		To:   []string{"fakemail1@example.com"},
+		From: "fakemail2@example.com",
 	}
 
 	mockSMTPHost = &SMTPHost{
@@ -76,8 +76,8 @@ func TestValidateSuccess(t *testing.T) {
 			name: "return no errors: multiple To emails",
 			parameters: Plugin{
 				Email: &email.Email{
-					To:   []string{"one@gmail.com", "two@comcast.net"},
-					From: "three@email.com",
+					To:   []string{"fakemail1@example.com", "fakemail2@example.com"},
+					From: "fakemail3@example.com",
 				},
 				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
@@ -87,8 +87,8 @@ func TestValidateSuccess(t *testing.T) {
 			name: "return no errors: no username or password",
 			parameters: Plugin{
 				Email: &email.Email{
-					To:   []string{"one@gmail.com", "two@comcast.net"},
-					From: "three@email.com",
+					To:   []string{"fakemail1@example.com", "fakemail2@example.com"},
+					From: "fakemail3@example.com",
 				},
 				SMTPHost: &SMTPHost{
 					Host: "smtphost.com",
@@ -101,11 +101,11 @@ func TestValidateSuccess(t *testing.T) {
 			name: "return no errors: extra email parameters",
 			parameters: Plugin{
 				Email: &email.Email{
-					To:          []string{"one@gmail.com", "two@comcast.net"},
-					From:        "three@email.com",
-					ReplyTo:     []string{"first.last@email.com"},
-					Bcc:         []string{"first.last@email.com"},
-					Cc:          []string{"first.last@email.com"},
+					To:          []string{"fakemail1@example.com", "fakemail2@example.com"},
+					From:        "fakemail3@example.com",
+					ReplyTo:     []string{"fakemail@example.com"},
+					Bcc:         []string{"fakemail@example.com"},
+					Cc:          []string{"fakemail@example.com"},
 					Subject:     "subject",
 					Text:        []byte(""),
 					HTML:        []byte(""),
@@ -150,7 +150,7 @@ func TestValidateErrors(t *testing.T) {
 			name: "To missing",
 			parameters: Plugin{
 				Email: &email.Email{
-					From: "two@email.com",
+					From: "fakemail@example.com",
 				},
 				Attachment: noAttachment,
 			},
@@ -160,7 +160,7 @@ func TestValidateErrors(t *testing.T) {
 			name: "From missing",
 			parameters: Plugin{
 				Email: &email.Email{
-					To: []string{"one@email.com"},
+					To: []string{"fakemail@example.com"},
 				},
 				Attachment: noAttachment,
 			},
@@ -246,8 +246,8 @@ func TestInjectEnvSuccess(t *testing.T) {
 			name: "email using default subject and user text",
 			parameters: Plugin{
 				Email: &email.Email{
-					To:      []string{"one@gmail.com", "two@comcast.net"},
-					From:    "three@email.com",
+					To:      []string{"fakemail1@example.com", "fakemail2@example.com"},
+					From:    "fakemail3@example.com",
 					Subject: DefaultSubject,
 					Text:    []byte("This is some text for repo: {{ .VELA_REPO_FULL_NAME }}"),
 				},
@@ -260,8 +260,8 @@ func TestInjectEnvSuccess(t *testing.T) {
 			name: "email using user subject and html",
 			parameters: Plugin{
 				Email: &email.Email{
-					To:      []string{"one@gmail.com", "two@comcast.net"},
-					From:    "three@email.com",
+					To:      []string{"fakemail1@example.com", "fakemail2@example.com"},
+					From:    "fakemail3@example.com",
 					Subject: "Commit failure on vela build: {{ .VELA_BUILD_NUMBER }}",
 					Text:    []byte("This is some text for repo: {{ .VELA_REPO_FULL_NAME }}"),
 				},
@@ -315,8 +315,8 @@ func TestInjectEnvBadVar(t *testing.T) {
 			name: "error: using environment variable that doesnt exist",
 			parameters: Plugin{
 				Email: &email.Email{
-					To:      []string{"one@gmail.com", "two@comcast.net"},
-					From:    "three@email.com",
+					To:      []string{"fakemail1@example.com", "fakemail2@example.com"},
+					From:    "fakemail3@example.com",
 					Subject: "This is a bad subject {{ .SOME_OTHER_VARIABLE }}",
 				},
 				SMTPHost:   mockSMTPHost,

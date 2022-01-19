@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Target Brands, Inc. All rights reserved.
+// Copyright (c) 2022 Target Brands, Inc. All rights reserved.
 //
 // Use of this source code is governed by the LICENSE file in this repository.
 
@@ -169,7 +169,7 @@ func (p *Plugin) Exec() error {
 	logrus.Trace("entered plugin.Execute")
 	defer logrus.Trace("exited plugin.Execute")
 
-	logrus.Info("Parsing Subject...")
+	logrus.Debug("Parsing Subject...")
 	subject, err := p.injectEnv(p.Email.Subject)
 	if err != nil {
 		return err
@@ -177,19 +177,19 @@ func (p *Plugin) Exec() error {
 	p.Email.Subject = subject
 
 	if len(p.Email.HTML) > 0 {
-		logrus.Info("Parsing HTML...")
+		logrus.Debug("Parsing HTML...")
 		body, err := p.injectEnv(string(p.Email.HTML))
 		if err != nil {
 			return err
 		}
-		logrus.Info("Parsing CSS...")
+		logrus.Debug("Parsing CSS...")
 		body, err = inliner.Inline(body)
 		if err != nil {
 			return err
 		}
 		p.Email.HTML = []byte(body)
 	} else {
-		logrus.Info("Parsing Text...")
+		logrus.Debug("Parsing Text...")
 		body, err := p.injectEnv(string(p.Email.Text))
 		if err != nil {
 			return err
@@ -215,19 +215,19 @@ func (p *Plugin) Exec() error {
 	case "starttls":
 		logrus.Info("Sending email with StartTLS...")
 		if err := p.Email.SendWithStartTLS(host, auth, p.TLSConfig); err != nil {
-			return fmt.Errorf("error sending with StartTLS: %v", err)
+			return fmt.Errorf("error sending with StartTLS: %w", err)
 		}
 	case "tls":
 		logrus.Info("Sending email with TLS...")
 		if err := p.Email.SendWithTLS(host, auth, p.TLSConfig); err != nil {
-			return fmt.Errorf("error sending with TLS: %v", err)
+			return fmt.Errorf("error sending with TLS: %w", err)
 		}
 	case "plain":
 		fallthrough
 	default:
 		logrus.Info("Sending email with Plain...")
 		if err := p.Email.Send(host, auth); err != nil {
-			return fmt.Errorf("error sending with Plain: %v", err)
+			return fmt.Errorf("error sending with Plain: %w", err)
 		}
 	}
 

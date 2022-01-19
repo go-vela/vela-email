@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Target Brands, Inc. All rights reserved.
+// Copyright (c) 2022 Target Brands, Inc. All rights reserved.
 //
 // Use of this source code is governed by the LICENSE file in this repository.
 
@@ -36,7 +36,7 @@ func main() {
 		Name:      "vela-email",
 		HelpName:  "vela-email",
 		Usage:     "Vela Email plugin for sending Vela build information to a user's email.",
-		Copyright: "Copyright (c) 2021 Target Brands, Inc. All rights reserved.",
+		Copyright: "Copyright (c) 2022 Target Brands, Inc. All rights reserved.",
 		Authors: []*cli.Author{
 			{
 				Name:  "Vela Admins",

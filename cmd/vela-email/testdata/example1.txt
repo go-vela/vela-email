@@ -1,5 +1,5 @@
 From: vela-noreply@fakemail.com
-To: emailone@email.com, emailtwo@email.com
+To: fakemail1@example.com, fakemail2@example.com
 Subject: Vela Pipeline for {{ .VELA_REPO_FULL_NAME }} {{ .VELA_BUILD_BRANCH }}
 Content-Type: text/plain
 
