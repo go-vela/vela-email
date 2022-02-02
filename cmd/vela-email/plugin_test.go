@@ -279,7 +279,6 @@ func TestInjectEnvSuccess(t *testing.T) {
 				t.FailNow()
 			}
 			createMockEnv()
-			test.parameters.Env = test.parameters.Environment()
 			subject, err := test.parameters.injectEnv(test.parameters.Email.Subject)
 			if err != nil {
 				t.Errorf("InjectEnv(subject) should not have raised an error %s", err)
@@ -334,7 +333,6 @@ func TestInjectEnvBadVar(t *testing.T) {
 			}
 			createMockEnv()
 			os.Setenv("SOME_OTHER_VARIABLE", "check")
-			test.parameters.Env = test.parameters.Environment()
 			subject, err := test.parameters.injectEnv(test.parameters.Email.Subject)
 
 			if err != nil {

@@ -48,8 +48,6 @@ type (
 		SendType string
 		// Auth arguments loaded for the plugin
 		Auth string
-		// Env arguments loaded for the plugin
-		Env map[string]string
 		// Readable build time environment variables
 		BuildEnv *BuildEnv
 	}
@@ -246,7 +244,7 @@ func (p *Plugin) injectEnv(str string) (string, error) {
 	// parse string to template
 	t := template.Must(template.New("input").Parse(str))
 
-	err := t.Execute(buffer, p.Env)
+	err := t.Execute(buffer, p.Environment())
 
 	return buffer.String(), err
 }
@@ -254,10 +252,6 @@ func (p *Plugin) injectEnv(str string) (string, error) {
 // splits a string of emails and returns them as a slice.
 func stringToSlice(s []string) []string {
 	var slice []string
-
-	if len(s) == 0 {
-		return s
-	}
 
 	for _, e := range s {
 		if len(e) > 0 {

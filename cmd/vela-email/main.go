@@ -276,9 +276,6 @@ func run(c *cli.Context) error {
 		return err
 	}
 
-	// add vela environment variables
-	p.Env = p.Environment()
-
 	// execute the plugin
 	return p.Exec()
 }
