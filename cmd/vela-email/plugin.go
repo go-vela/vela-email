@@ -26,8 +26,8 @@ var (
 	// ErrorMissingEmailFromParam is returned when the plugin is missing the From email parameter.
 	ErrorMissingEmailFromParam = errors.New("missing email parameter: From")
 
-	// ErrorEmptyAttach is returned when the plugin finds the provided attachment to be empty.
-	ErrorEmptyAttach = errors.New("attachment provided is empty")
+	// ErrorEmptyFile is returned when the plugin finds the provided attachment to be empty.
+	ErrorEmptyFile = errors.New("file provided is empty")
 
 	// ErrorMissingSMTPParam is returned when the plugin is missing a smtp host or port parameter.
 	ErrorMissingSMTPParam = errors.New("missing smtp parameter (host/port)")
@@ -38,6 +38,8 @@ type (
 	Plugin struct {
 		// Email arguments loaded for the plugin
 		Email *email.Email
+		// EmailFilename arguments loaded for the plugin
+		EmailFilename string
 		// Attachment arguments loaded for the plugin
 		Attachment *email.Attachment
 		// SmtpHost arguments loaded for the plugin
@@ -77,17 +79,17 @@ func (p *Plugin) Validate() error {
 	defer logrus.Trace("exited plugin.Validate")
 
 	logrus.Info("Validating Parameters...")
-	if len(p.Attachment.Filename) != 0 {
-		fileInfo, err := os.Stat(p.Attachment.Filename)
+	if len(p.EmailFilename) != 0 {
+		fileInfo, err := os.Stat(p.EmailFilename)
 		if errors.Is(err, os.ErrNotExist) {
 			return os.ErrNotExist
 		}
 
 		if fileInfo.Size() == 0 {
-			return ErrorEmptyAttach
+			return ErrorEmptyFile
 		}
 
-		file, err := os.Open(p.Attachment.Filename)
+		file, err := os.Open(p.EmailFilename)
 		if err != nil {
 			return err
 		}
@@ -116,6 +118,22 @@ func (p *Plugin) Validate() error {
 
 	if len(p.Email.From) == 0 {
 		return ErrorMissingEmailFromParam
+	}
+
+	if len(p.Attachment.Filename) != 0 {
+		fileInfo, err := os.Stat(p.Attachment.Filename)
+		if errors.Is(err, os.ErrNotExist) {
+			return os.ErrNotExist
+		}
+
+		if fileInfo.Size() == 0 {
+			return ErrorEmptyFile
+		}
+
+		p.Attachment, err = p.Email.AttachFile(p.Attachment.Filename)
+		if err != nil {
+			return err
+		}
 	}
 
 	if len(p.SMTPHost.Host) == 0 || len(p.SMTPHost.Port) == 0 {

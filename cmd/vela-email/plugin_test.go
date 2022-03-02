@@ -25,6 +25,7 @@ var (
 		Username: "username",
 		Password: "password",
 	}
+
 	noAttachment = &email.Attachment{
 		Filename: "",
 	}
@@ -37,10 +38,11 @@ var (
 	}
 
 	mockPlugin = &Plugin{
-		Email:      mockEmail,
-		SMTPHost:   mockSMTPHost,
-		Attachment: noAttachment,
-		BuildEnv:   mockBuildEnv,
+		Email:      	mockEmail,
+		EmailFilename: 	"",
+		SMTPHost:   	mockSMTPHost,
+		Attachment: 	noAttachment,
+		BuildEnv:   	mockBuildEnv,
 	}
 )
 
@@ -67,7 +69,8 @@ func TestValidateSuccess(t *testing.T) {
 		{
 			name: "return no errors: single To email",
 			parameters: Plugin{
-				Email:      mockEmail,
+				Email: mockEmail,
+				EmailFilename: 	"",
 				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 			},
@@ -79,6 +82,7 @@ func TestValidateSuccess(t *testing.T) {
 					To:   []string{"fakemail1@example.com", "fakemail2@example.com"},
 					From: "fakemail3@example.com",
 				},
+				EmailFilename: 	"",
 				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 			},
@@ -90,6 +94,7 @@ func TestValidateSuccess(t *testing.T) {
 					To:   []string{"fakemail1@example.com", "fakemail2@example.com"},
 					From: "fakemail3@example.com",
 				},
+				EmailFilename: 	"",
 				SMTPHost: &SMTPHost{
 					Host: "smtphost.com",
 					Port: "587",
@@ -112,6 +117,7 @@ func TestValidateSuccess(t *testing.T) {
 					Sender:      "sender",
 					ReadReceipt: []string{"idk"},
 				},
+				EmailFilename: 	"",
 				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 			},
@@ -123,9 +129,32 @@ func TestValidateSuccess(t *testing.T) {
 					To:   []string{""},
 					From: "",
 				},
+				EmailFilename: 	"testdata/example1.txt",
 				SMTPHost: mockSMTPHost,
 				Attachment: &email.Attachment{
-					Filename: "testdata/example1.txt",
+					Filename: "",
+				},
+			},
+		},
+		{
+			name: "return no errors: add txt attachment to email",
+			parameters: Plugin{
+				Email: mockEmail,
+				EmailFilename: 	"",
+				SMTPHost: mockSMTPHost,
+				Attachment: &email.Attachment{
+					Filename: "",
+				},
+			},
+		},
+		{
+			name: "return no errors: add png image attachment to email",
+			parameters: Plugin{
+				Email: mockEmail,
+				EmailFilename: 	"",
+				SMTPHost: mockSMTPHost,
+				Attachment: &email.Attachment{
+					Filename: "testdata/smile.png",
 				},
 			},
 		},
@@ -152,6 +181,7 @@ func TestValidateErrors(t *testing.T) {
 				Email: &email.Email{
 					From: "fakemail@example.com",
 				},
+				EmailFilename: 	"",
 				Attachment: noAttachment,
 			},
 			wantErr: ErrorMissingEmailToParam,
@@ -162,27 +192,51 @@ func TestValidateErrors(t *testing.T) {
 				Email: &email.Email{
 					To: []string{"fakemail@example.com"},
 				},
+				EmailFilename: 	"",
 				Attachment: noAttachment,
 			},
 			wantErr: ErrorMissingEmailFromParam,
 		},
 		{
-			name: "Email parameters missing from attachment",
+			name: "Email parameters missing from file",
 			parameters: Plugin{
 				Email: &email.Email{
 					To:   []string{""},
 					From: "",
 				},
+				EmailFilename: 	"testdata/badattachment.txt",
 				SMTPHost: mockSMTPHost,
 				Attachment: &email.Attachment{
-					Filename: "testdata/badattachment.txt",
+					Filename: "",
 				},
 			},
 			wantErr: io.EOF,
 		},
 		{
+			name: "Email file missing",
+			parameters: Plugin{
+				EmailFilename: 	"testdata/doesnotexist.txt",
+				Attachment: &email.Attachment{
+					Filename: "",
+				},
+			},
+			wantErr: os.ErrNotExist,
+		},
+		{
+			name: "Email file empty",
+			parameters: Plugin{
+				EmailFilename: "testdata/empty.txt",
+				Attachment: &email.Attachment{
+					Filename: "",
+				},
+			},
+			wantErr: ErrorEmptyFile,
+		},
+		{
 			name: "Email attachment missing",
 			parameters: Plugin{
+				Email: mockEmail,
+				EmailFilename: 	"",
 				Attachment: &email.Attachment{
 					Filename: "testdata/doesnotexist.txt",
 				},
@@ -192,16 +246,19 @@ func TestValidateErrors(t *testing.T) {
 		{
 			name: "Email attachment empty",
 			parameters: Plugin{
+				Email: mockEmail,
+				EmailFilename: "",
 				Attachment: &email.Attachment{
 					Filename: "testdata/empty.txt",
 				},
 			},
-			wantErr: ErrorEmptyAttach,
+			wantErr: ErrorEmptyFile,
 		},
 		{
 			name: "SMTP host missing",
 			parameters: Plugin{
 				Email: mockEmail,
+				EmailFilename: "",
 				SMTPHost: &SMTPHost{
 					Port: "1902",
 				},
@@ -213,6 +270,7 @@ func TestValidateErrors(t *testing.T) {
 			name: "SMTP port missing",
 			parameters: Plugin{
 				Email: mockEmail,
+				EmailFilename: "",
 				SMTPHost: &SMTPHost{
 					Host: "smtphost.com",
 				},
@@ -251,6 +309,7 @@ func TestInjectEnvSuccess(t *testing.T) {
 					Subject: DefaultSubject,
 					Text:    []byte("This is some text for repo: {{ .VELA_REPO_FULL_NAME }}"),
 				},
+				EmailFilename: "",
 				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 				BuildEnv:   mockBuildEnv,
@@ -265,6 +324,7 @@ func TestInjectEnvSuccess(t *testing.T) {
 					Subject: "Commit failure on vela build: {{ .VELA_BUILD_NUMBER }}",
 					Text:    []byte("This is some text for repo: {{ .VELA_REPO_FULL_NAME }}"),
 				},
+				EmailFilename: "",
 				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 				BuildEnv:   mockBuildEnv,
@@ -318,6 +378,7 @@ func TestInjectEnvBadVar(t *testing.T) {
 					From:    "fakemail3@example.com",
 					Subject: "This is a bad subject {{ .SOME_OTHER_VARIABLE }}",
 				},
+				EmailFilename: "",
 				SMTPHost:   mockSMTPHost,
 				Attachment: noAttachment,
 				BuildEnv:   mockBuildEnv,

@@ -1,5 +1,7 @@
 From: vela-noreply@fakemail.com
 To: fakemail1@example.com, fakemail2@example.com
+Bcc: fakemail@example.com
+Cc: fakemail@example.com
 Subject: Vela Pipeline for {{ .VELA_REPO_FULL_NAME }} {{ .VELA_BUILD_BRANCH }}
 Content-Type: text/plain
 

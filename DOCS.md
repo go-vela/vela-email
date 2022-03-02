@@ -221,6 +221,12 @@ The following parameters are used to configure the image:
 
 ### Attachment
 
+| Parameter    | Description                    | Required | Default | Environment Variables                        |
+| ------------ | ------------------------------ | -------- | ------- | -------------------------------------------- |
+| `attachment` | file will be attached to email | false    | N/A     | `PARAMETER_ATTACHMENT`<br>`EMAIL_ATTACHMENT` |
+
+### Email Filename
+
 | Parameter  | Description                                               | Required | Default | Environment Variables                    |
 | ---------- | --------------------------------------------------------- | -------- | ------- | ---------------------------------------- |
 | `filename` | data in attached file will be used to populate the email. | false    | N/A     | `PARAMETER_FILENAME`<br>`EMAIL_FILENAME` |

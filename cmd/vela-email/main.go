@@ -104,6 +104,12 @@ func main() {
 				Name:    "readreceipt",
 				Usage:   "request read receipts and delivery notifications",
 			},
+			// Attachment flag
+			&cli.StringFlag{
+				EnvVars: []string{"PARAMETER_ATTACHMENT", "EMAIL_ATTACHMENT"},
+				Name:	 "attachment",
+				Usage:	 "file to attach to email",
+			},
 			// SmtpHost flags
 			&cli.StringFlag{
 				EnvVars:  []string{"PARAMETER_HOST", "EMAIL_HOST"},
@@ -129,11 +135,11 @@ func main() {
 				Name:     "password",
 				Usage:    "smtp host password",
 			},
-			// Attachment flag
+			// EmailFilename flag
 			&cli.StringFlag{
 				EnvVars: []string{"PARAMETER_FILENAME", "EMAIL_FILENAME"},
 				Name:    "filename",
-				Usage:   "file to attach to email",
+				Usage:   "file that contains email information (To, From, Subject, etc.)",
 			},
 			// TLSConfig flag
 			&cli.BoolFlag{
@@ -229,11 +235,6 @@ func run(c *cli.Context) error {
 		// auth configuration
 		Auth: c.String("auth"),
 
-		// attachment configuration
-		Attachment: &email.Attachment{
-			Filename: c.String("filename"),
-		},
-
 		// email configuration
 		Email: &email.Email{
 			ReplyTo:     c.StringSlice("replyto"),
@@ -246,6 +247,14 @@ func run(c *cli.Context) error {
 			HTML:        []byte(c.String("html")),
 			Sender:      c.String("sender"),
 			ReadReceipt: c.StringSlice("readreceipt"),
+		},
+
+		// email filename configuration
+		EmailFilename:  c.String("filename"),
+
+		// attachment configuration
+		Attachment: &email.Attachment{
+			Filename: c.String("attachment"),
 		},
 
 		// smtp configuration
