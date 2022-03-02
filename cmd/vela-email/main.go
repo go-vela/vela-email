@@ -107,8 +107,8 @@ func main() {
 			// Attachment flag
 			&cli.StringFlag{
 				EnvVars: []string{"PARAMETER_ATTACHMENT", "EMAIL_ATTACHMENT"},
-				Name:	 "attachment",
-				Usage:	 "file to attach to email",
+				Name:    "attachment",
+				Usage:   "file to attach to email",
 			},
 			// SmtpHost flags
 			&cli.StringFlag{
@@ -250,7 +250,7 @@ func run(c *cli.Context) error {
 		},
 
 		// email filename configuration
-		EmailFilename:  c.String("filename"),
+		EmailFilename: c.String("filename"),
 
 		// attachment configuration
 		Attachment: &email.Attachment{
