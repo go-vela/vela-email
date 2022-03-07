@@ -77,6 +77,7 @@ func (p *Plugin) Validate() error {
 	defer logrus.Trace("exited plugin.Validate")
 
 	logrus.Info("Validating Parameters...")
+
 	if len(p.Attachment.Filename) != 0 {
 		fileInfo, err := os.Stat(p.Attachment.Filename)
 		if errors.Is(err, os.ErrNotExist) {
@@ -168,55 +169,70 @@ func (p *Plugin) Exec() error {
 	defer logrus.Trace("exited plugin.Execute")
 
 	logrus.Debug("Parsing Subject...")
+
 	subject, err := p.injectEnv(p.Email.Subject)
 	if err != nil {
 		return err
 	}
+
 	p.Email.Subject = subject
 
 	if len(p.Email.HTML) > 0 {
 		logrus.Debug("Parsing HTML...")
+
 		body, err := p.injectEnv(string(p.Email.HTML))
 		if err != nil {
 			return err
 		}
+
 		logrus.Debug("Parsing CSS...")
+
 		body, err = inliner.Inline(body)
 		if err != nil {
 			return err
 		}
+
 		p.Email.HTML = []byte(body)
 	} else {
 		logrus.Debug("Parsing Text...")
+
 		body, err := p.injectEnv(string(p.Email.Text))
 		if err != nil {
 			return err
 		}
+
 		p.Email.Text = []byte(body)
 	}
 
 	var auth smtp.Auth
+
 	switch strings.ToLower(p.Auth) {
 	case "plainauth":
 		logrus.Info("Using login authentication from smtp/PlainAuth...")
+
 		auth = smtp.PlainAuth("", p.SMTPHost.Username, p.SMTPHost.Password, p.SMTPHost.Host)
 	case "loginauth":
 		logrus.Info("Using login authentication from loginauth/LoginAuth...")
+
 		auth = LoginAuth(p.SMTPHost.Username, p.SMTPHost.Password)
 	default:
 		logrus.Info("Using no login authentication...")
+
 		auth = nil
 	}
 
 	host := p.SMTPHost.Host + ":" + p.SMTPHost.Port
+
 	switch strings.ToLower(p.SendType) {
 	case "starttls":
 		logrus.Info("Sending email with StartTLS...")
+
 		if err := p.Email.SendWithStartTLS(host, auth, p.TLSConfig); err != nil {
 			return fmt.Errorf("error sending with StartTLS: %w", err)
 		}
 	case "tls":
 		logrus.Info("Sending email with TLS...")
+
 		if err := p.Email.SendWithTLS(host, auth, p.TLSConfig); err != nil {
 			return fmt.Errorf("error sending with TLS: %w", err)
 		}
@@ -224,12 +240,14 @@ func (p *Plugin) Exec() error {
 		fallthrough
 	default:
 		logrus.Info("Sending email with Plain...")
+
 		if err := p.Email.Send(host, auth); err != nil {
 			return fmt.Errorf("error sending with Plain: %w", err)
 		}
 	}
 
 	logrus.Info("Plugin finished")
+
 	return nil
 }
 
@@ -259,5 +277,6 @@ func stringToSlice(s []string) []string {
 			slice = append(slice, temp...)
 		}
 	}
+
 	return slice
 }
