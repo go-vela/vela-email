@@ -154,7 +154,7 @@ func TestValidateSuccess(t *testing.T) {
 				EmailFilename: "",
 				SMTPHost:      mockSMTPHost,
 				Attachment: &email.Attachment{
-					Filename: "testdata/smile.png",
+					Filename: "testdata/vela.png",
 				},
 			},
 		},
