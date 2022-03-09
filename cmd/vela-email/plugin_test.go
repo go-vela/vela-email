@@ -4,6 +4,7 @@
 package main
 
 import (
+	"errors"
 	"io"
 	"os"
 	"strings"
@@ -284,7 +285,7 @@ func TestValidateErrors(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			if err := test.parameters.Validate(); err == nil {
 				t.Errorf("Validate() should have raised an error")
-			} else if err != test.wantErr {
+			} else if !errors.Is(err, test.wantErr) {
 				t.Errorf("Validate() error = %v, wantErr = %v", err, test.wantErr)
 			}
 		})
