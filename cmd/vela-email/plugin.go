@@ -79,6 +79,7 @@ func (p *Plugin) Validate() error {
 	defer logrus.Trace("exited plugin.Validate")
 
 	logrus.Info("Validating Parameters...")
+
 	if len(p.EmailFilename) != 0 {
 		fileInfo, err := os.Stat(p.EmailFilename)
 		if errors.Is(err, os.ErrNotExist) {
