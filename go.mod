@@ -6,7 +6,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/PuerkitoBio/goquery v1.8.0 // indirect
 	github.com/aymerick/douceur v0.2.0
-	github.com/go-vela/types v0.13.0
+	github.com/go-vela/types v0.14.0
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
 	github.com/sirupsen/logrus v1.8.1
 	github.com/urfave/cli/v2 v2.8.1
