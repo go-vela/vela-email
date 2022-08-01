@@ -90,7 +90,7 @@ linters:
     - staticcheck         # applies static analysis checks, go vet on steroids
     - structcheck         # finds unused struct fields
     - stylecheck          # replacement for golint
-    - tenv                # analyzer that detects using t.Setenv instead of os.Setenv since Go1.17
+    - tenv                # analyzer that detects using os.Setenv instead of t.Setenv since Go1.17
     - typecheck           # parses and type-checks go code, like the front-end of a go compiler
     - unconvert           # remove unnecessary type conversions
     - unparam             # reports unused function parameters
