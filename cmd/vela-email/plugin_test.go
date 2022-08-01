@@ -48,18 +48,18 @@ var (
 )
 
 func createMockEnv() {
-	os.Setenv("VELA_BUILD_CREATED", "1556720958")
-	os.Setenv("VELA_BUILD_ENQUEUED", "1556720958")
-	os.Setenv("VELA_BUILD_FINISHED", "1556720958")
-	os.Setenv("VELA_BUILD_STARTED", "1556720958")
-	os.Setenv("VELA_BUILD_AUTHOR", "octocat")
-	os.Setenv("VELA_BUILD_AUTHOR_EMAIL", "octocat@github.com")
-	os.Setenv("VELA_BUILD_BRANCH", "main")
-	os.Setenv("VELA_BUILD_COMMIT", "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d")
-	os.Setenv("VELA_BUILD_LINK", "https://vela-server.localhost/octocat/hello-world/1")
-	os.Setenv("VELA_BUILD_MESSAGE", "Merge pull request #6 from octocat/patch-1")
-	os.Setenv("VELA_BUILD_NUMBER", "1")
-	os.Setenv("VELA_REPO_FULL_NAME", "octocat/hello-world")
+	t.Setenv("VELA_BUILD_CREATED", "1556720958")
+	t.Setenv("VELA_BUILD_ENQUEUED", "1556720958")
+	t.Setenv("VELA_BUILD_FINISHED", "1556720958")
+	t.Setenv("VELA_BUILD_STARTED", "1556720958")
+	t.Setenv("VELA_BUILD_AUTHOR", "octocat")
+	t.Setenv("VELA_BUILD_AUTHOR_EMAIL", "octocat@github.com")
+	t.Setenv("VELA_BUILD_BRANCH", "main")
+	t.Setenv("VELA_BUILD_COMMIT", "7fd1a60b01f91b314f59955a4e4d4e80d8edf11d")
+	t.Setenv("VELA_BUILD_LINK", "https://vela-server.localhost/octocat/hello-world/1")
+	t.Setenv("VELA_BUILD_MESSAGE", "Merge pull request #6 from octocat/patch-1")
+	t.Setenv("VELA_BUILD_NUMBER", "1")
+	t.Setenv("VELA_REPO_FULL_NAME", "octocat/hello-world")
 }
 
 func TestValidateSuccess(t *testing.T) {
@@ -394,7 +394,7 @@ func TestInjectEnvBadVar(t *testing.T) {
 				t.FailNow()
 			}
 			createMockEnv()
-			os.Setenv("SOME_OTHER_VARIABLE", "check")
+			t.Setenv("SOME_OTHER_VARIABLE", "check")
 			subject, err := test.parameters.injectEnv(test.parameters.Email.Subject)
 
 			if err != nil {
