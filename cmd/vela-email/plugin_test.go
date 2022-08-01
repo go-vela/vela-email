@@ -47,7 +47,7 @@ var (
 	}
 )
 
-func createMockEnv() {
+func createMockEnv(t *testing.T) {
 	t.Setenv("VELA_BUILD_CREATED", "1556720958")
 	t.Setenv("VELA_BUILD_ENQUEUED", "1556720958")
 	t.Setenv("VELA_BUILD_FINISHED", "1556720958")
@@ -339,7 +339,7 @@ func TestInjectEnvSuccess(t *testing.T) {
 				t.Errorf("Validate() should not have raised an error: %s", err)
 				t.FailNow()
 			}
-			createMockEnv()
+			createMockEnv(t)
 			subject, err := test.parameters.injectEnv(test.parameters.Email.Subject)
 			if err != nil {
 				t.Errorf("InjectEnv(subject) should not have raised an error %s", err)
@@ -393,7 +393,7 @@ func TestInjectEnvBadVar(t *testing.T) {
 				t.Errorf("Validate() should not have raised an error: %s", err)
 				t.FailNow()
 			}
-			createMockEnv()
+			createMockEnv(t)
 			t.Setenv("SOME_OTHER_VARIABLE", "check")
 			subject, err := test.parameters.injectEnv(test.parameters.Email.Subject)
 
