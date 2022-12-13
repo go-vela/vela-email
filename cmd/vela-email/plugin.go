@@ -31,6 +31,12 @@ var (
 
 	// ErrorMissingSMTPParam is returned when the plugin is missing a smtp host or port parameter.
 	ErrorMissingSMTPParam = errors.New("missing smtp parameter (host/port)")
+
+	// ErrorMissingSMTPUsername is returned when the plugin is missing a smtp host username.
+	ErrorMissingSMTPUsername = errors.New("missing smtp host username")
+
+	// ErrorMissingSMTPPassword is returned when the plugin is missing a smtp host password.
+	ErrorMissingSMTPPassword = errors.New("missing smtp host password")
 )
 
 // Plugin represents the configuration loaded for the plugin.
@@ -139,6 +145,14 @@ func (p *Plugin) Validate() error {
 
 	if len(p.SMTPHost.Host) == 0 || len(p.SMTPHost.Port) == 0 {
 		return ErrorMissingSMTPParam
+	}
+
+	if len(p.SMTPHost.Username) == 0 {
+		return ErrorMissingSMTPUsername
+	}
+
+	if len(p.SMTPHost.Password) == 0 {
+		return ErrorMissingSMTPPassword
 	}
 
 	// set defaults
