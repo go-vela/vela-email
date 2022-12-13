@@ -77,6 +77,28 @@ func TestValidateSuccess(t *testing.T) {
 			},
 		},
 		{
+			name: "return no errors: auth specified with credentials",
+			parameters: Plugin{
+				Email:         mockEmail,
+				EmailFilename: "",
+				SMTPHost:      mockSMTPHost,
+				Attachment:    noAttachment,
+				Auth:          "LoginAuth",
+			},
+		},
+		{
+			name: "return no errors: auth not specified, credentials absent",
+			parameters: Plugin{
+				Email:         mockEmail,
+				EmailFilename: "",
+				SMTPHost: &SMTPHost{
+					Host: "smtphost.com",
+					Port: "234234",
+				},
+				Attachment: noAttachment,
+			},
+		},
+		{
 			name: "return no errors: multiple To emails",
 			parameters: Plugin{
 				Email: &email.Email{
@@ -278,6 +300,20 @@ func TestValidateErrors(t *testing.T) {
 				Attachment: noAttachment,
 			},
 			wantErr: ErrorMissingSMTPParam,
+		},
+		{
+			name: "SMTP auth supplied but credentials missing",
+			parameters: Plugin{
+				Auth: "LoginAuth",
+				SMTPHost: &SMTPHost{
+					Host: "smtphost.com",
+					Port: "234234",
+				},
+				Email:         mockEmail,
+				EmailFilename: "",
+				Attachment:    noAttachment,
+			},
+			wantErr: ErrorAuthSpecifiedButCredentialsMissing,
 		},
 	}
 
