@@ -6,7 +6,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/aymerick/douceur v0.2.0
 	github.com/go-vela/types v0.15.1
-	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
+	github.com/jordan-wright/email v0.0.0-20200602115436-fd8a7622303e
 	github.com/sirupsen/logrus v1.9.0
 	github.com/urfave/cli/v2 v2.17.1
 )
