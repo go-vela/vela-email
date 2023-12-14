@@ -26,7 +26,7 @@ func LoginAuth(username, password string) smtp.Auth {
 // that the authentication should be skipped.
 // If it returns a non-nil error, the SMTP client aborts
 // the authentication attempt and closes the connection.
-func (a *loginAuth) Start(server *smtp.ServerInfo) (string, []byte, error) {
+func (a *loginAuth) Start(_ *smtp.ServerInfo) (string, []byte, error) {
 	return "LOGIN", []byte{}, nil
 }
 
