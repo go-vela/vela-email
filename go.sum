@@ -11,8 +11,8 @@ github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46t
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/go-vela/types v0.22.0 h1:JmAQ9Hy4HnOgbgNsNz5x1wu3Myv47KoC0rxR9x36OQ4=
-github.com/go-vela/types v0.22.0/go.mod h1:ljNY36D6YkpObBbNF7Xslv3oxN4mGuQAwWhnnK/V06I=
+github.com/go-vela/types v0.23.2 h1:QDt2lta7FPEfN2RK/Bn++DkqyjGIB4H/Q4XkFAj3hXQ=
+github.com/go-vela/types v0.23.2/go.mod h1:aTE6dzssqTGOvU6m2/vsI9NoSW/3hH/yLzf3cCSo0Zk=
 github.com/gorilla/css v1.0.0 h1:BQqNyPTi50JCFMTw/b67hByjMVXZRwGha6wxVGkeihY=
 github.com/gorilla/css v1.0.0/go.mod h1:Dn721qIggHpt4+EFCcTLTU/vk5ySda2ReITrtgBl60c=
 github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible h1:jdpOPRN1zP63Td1hDQbZW73xKmzDvZHzVdNYxhnTMDA=
