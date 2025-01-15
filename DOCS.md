@@ -150,7 +150,7 @@ steps:
 
 > This example will add the secret to the `email` step as environment variables:
 >
-> - `USERNAME=<value>`
+> - `USERNAME=value`
 
 ### External
 
@@ -190,22 +190,22 @@ The following parameters are used to configure the image:
 
 | Parameter   | Description                                                                | Required | Default | Environment Variables                      |
 | ----------- | -------------------------------------------------------------------------- | -------- | ------- | ------------------------------------------ |
-| `log_level` | set the log level for the plugin (valid options: `info`, `debug`, `trace`) | `true`   | `info`  | `PARAMETER_LOG_LEVEL`<br>`EMAIL_LOG_LEVEL` |
+| `log_level` | set the log level for the plugin (valid options: `info`, `debug`, `trace`) | `true`   | `info`  | `PARAMETER_LOG_LEVEL`<br/>`EMAIL_LOG_LEVEL` |
 
 ### Email
 
 | Parameter     | Description                                                       | Required | Default           | Environment Variables                          |
 | ------------- | ----------------------------------------------------------------- | -------- | ----------------- | ---------------------------------------------- |
-| `from`        | who the email is being sent from                                  | true     | N/A               | `PARAMETER_FROM`<br>`EMAIL_FROM`               |
-| `to`          | who the email is being sent to                                    | true     | N/A               | `PARAMETER_TO`<br>`EMAIL_TO`                   |
-| `cc`          | carbon copy of the email to be sent to                            | false    | N/A               | `PARAMETER_CC`<br>`EMAIL_CC`                   |
-| `bcc`         | blind carbon copy of the email to be sent to                      | false    | N/A               | `PARAMETER_BCC`<br>`EMAIL_BCC`                 |
-| `sender`      | who the email being sent from (will overwrite from)               | false    | N/A               | `PARAMETER_SENDER`<br>`EMAIL_SENDER`           |
-| `replyto`     | email address that will be used for replies                       | false    | N/A               | `PARAMETER_REPLYTO`<br>`EMAIL_REPLYTO`         |
-| `subject`     | subject of the email                                              | false    | default subject   | `PARAMETER_SUBJECT`<br>`EMAIL_SUBJECT`         |
-| `text`        | body of the email in plain text format (HTML will overwrite TEXT) | false    | N/A               | `PARAMETER_TEXT`<br>`EMAIL_TEXT`               |
-| `html`        | body of the email in hmtl format (HTML will overwrite TEXT)       | false    | default html body | `PARAMETER_HTML`<br>`EMAIL_HTML`               |
-| `readreceipt` | delivery confirmation                                             | false    | N/A               | `PARAMETER_READRECEIPT`<br>`EMAIL_READRECEIPT` |
+| `from`        | who the email is being sent from                                  | true     | N/A               | `PARAMETER_FROM`<br/>`EMAIL_FROM`               |
+| `to`          | who the email is being sent to                                    | true     | N/A               | `PARAMETER_TO`<br/>`EMAIL_TO`                   |
+| `cc`          | carbon copy of the email to be sent to                            | false    | N/A               | `PARAMETER_CC`<br/>`EMAIL_CC`                   |
+| `bcc`         | blind carbon copy of the email to be sent to                      | false    | N/A               | `PARAMETER_BCC`<br/>`EMAIL_BCC`                 |
+| `sender`      | who the email being sent from (will overwrite from)               | false    | N/A               | `PARAMETER_SENDER`<br/>`EMAIL_SENDER`           |
+| `replyto`     | email address that will be used for replies                       | false    | N/A               | `PARAMETER_REPLYTO`<br/>`EMAIL_REPLYTO`         |
+| `subject`     | subject of the email                                              | false    | default subject   | `PARAMETER_SUBJECT`<br/>`EMAIL_SUBJECT`         |
+| `text`        | body of the email in plain text format (HTML will overwrite TEXT) | false    | N/A               | `PARAMETER_TEXT`<br/>`EMAIL_TEXT`               |
+| `html`        | body of the email in hmtl format (HTML will overwrite TEXT)       | false    | default html body | `PARAMETER_HTML`<br/>`EMAIL_HTML`               |
+| `readreceipt` | delivery confirmation                                             | false    | N/A               | `PARAMETER_READRECEIPT`<br/>`EMAIL_READRECEIPT` |
 
 > **NOTE:**
 >
@@ -213,9 +213,9 @@ The following parameters are used to configure the image:
 >
 > - [ one@email.com, two@email.com ] or
 >
-> - [ firstname lastname \<one@email.com\>, firstname lastname \<two@email.com\> ]
+> - [ firstname lastname one@email.com, firstname lastname two@email.com ]
 >
-> Subject, Text body, and HTML body will accept VELA environments with the use of {{  }} such as:
+> Subject, Text body, and HTML body will accept VELA environments with the use of `{{  }}` such as:
 >
 > - `{{ .VELA_REPO_FULL_NAME }}`
 
@@ -223,41 +223,41 @@ The following parameters are used to configure the image:
 
 | Parameter    | Description                    | Required | Default | Environment Variables                        |
 | ------------ | ------------------------------ | -------- | ------- | -------------------------------------------- |
-| `attachment` | file will be attached to email | false    | N/A     | `PARAMETER_ATTACHMENT`<br>`EMAIL_ATTACHMENT` |
+| `attachment` | file will be attached to email | false    | N/A     | `PARAMETER_ATTACHMENT`<br/>`EMAIL_ATTACHMENT` |
 
 ### Email Filename
 
 | Parameter  | Description                                               | Required | Default | Environment Variables                    |
 | ---------- | --------------------------------------------------------- | -------- | ------- | ---------------------------------------- |
-| `filename` | data in attached file will be used to populate the email. | false    | N/A     | `PARAMETER_FILENAME`<br>`EMAIL_FILENAME` |
+| `filename` | data in attached file will be used to populate the email. | false    | N/A     | `PARAMETER_FILENAME`<br/>`EMAIL_FILENAME` |
 
 ### SMTP
 
 | Parameter  | Description   | Required | Default | Environment Variables                    |
 | ---------- | ------------- | -------- | ------- | ---------------------------------------- |
-| `host`     | SMTP host     | true     | N/A     | `PARAMETER_HOST`<br>`EMAIL_HOST`         |
-| `port`     | SMTP port     | true     | N/A     | `PARAMETER_PORT`<br>`EMAIL_PORT`         |
-| `username` | SMTP username | true     | N/A     | `PARAMETER_USERNAME`<br>`EMAIL_USERNAME` |
-| `password` | SMTP password | true     | N/A     | `PARAMETER_PASSWORD`<br>`EMAIL_PASSWORD` |
+| `host`     | SMTP host     | true     | N/A     | `PARAMETER_HOST`<br/>`EMAIL_HOST`         |
+| `port`     | SMTP port     | true     | N/A     | `PARAMETER_PORT`<br/>`EMAIL_PORT`         |
+| `username` | SMTP username | true     | N/A     | `PARAMETER_USERNAME`<br/>`EMAIL_USERNAME` |
+| `password` | SMTP password | true     | N/A     | `PARAMETER_PASSWORD`<br/>`EMAIL_PASSWORD` |
 
 ### TLS
 
 | Parameter            | Description                                                                                                                                              | Required | Default   | Environment Variables                        |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | --------- | -------------------------------------------- |
-| `servername`         | default is set to host address of SMTP server                                                                                                            | false    | SMTP host | `PARAMETER_SERVERNAME`<br>`EMAIL_SERVERNAME` |
-| `insecureskipverify` | verification of the server's certificate chain and host name. Only use true for testing purposes as this makes TLS susceptible to man-in-middle attacks. | false    | false     | `PARAMETER_SKIPVERIFY`<br>`EMAIL_SKIPVERIFY` |
+| `servername`         | default is set to host address of SMTP server                                                                                                            | false    | SMTP host | `PARAMETER_SERVERNAME`<br/>`EMAIL_SERVERNAME` |
+| `insecureskipverify` | verification of the server's certificate chain and host name. Only use true for testing purposes as this makes TLS susceptible to man-in-middle attacks. | false    | false     | `PARAMETER_SKIPVERIFY`<br/>`EMAIL_SKIPVERIFY` |
 
 ### Encryption
 
 | Parameter  | Description                                                       | Required | Default  | Environment Variables                    |
 | ---------- | ----------------------------------------------------------------- | -------- | -------- | ---------------------------------------- |
-| `sendtype` | security to send email (valid option: `Plain`, `StartTLS`, `TLS`) | true     | StartTLS | `PARAMETER_SENDTYPE`<br>`EMAIL_SENDTYPE` |
+| `sendtype` | security to send email (valid option: `Plain`, `StartTLS`, `TLS`) | true     | StartTLS | `PARAMETER_SENDTYPE`<br/>`EMAIL_SENDTYPE` |
 
 ### Authentication
 
 | Parameter | Description                                                   | Required | Default   | Environment Variables            |
 | --------- | ------------------------------------------------------------- | -------- | --------- | -------------------------------- |
-| `auth`    | login authentication (valid option: `PlainAuth`, `LoginAuth`) | true     | LoginAuth | `PARAMETER_AUTH`<br>`EMAIL_AUTH` |
+| `auth`    | login authentication (valid option: `PlainAuth`, `LoginAuth`) | true     | LoginAuth | `PARAMETER_AUTH`<br/>`EMAIL_AUTH` |
 
 > **NOTE:**
 >
