@@ -9,13 +9,13 @@ import (
 	"os"
 	"time"
 
-	"github.com/go-vela/vela-email/version"
 	"github.com/jordan-wright/email"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
+
+	"github.com/go-vela/vela-email/version"
 )
 
-//nolint:funlen // ignore false positive
 func main() {
 	// capture application version information.
 	pluginVersion := version.New()

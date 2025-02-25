@@ -373,12 +373,15 @@ func TestInjectEnvSuccess(t *testing.T) {
 				t.Errorf("Validate() should not have raised an error: %s", err)
 				t.FailNow()
 			}
+
 			createMockEnv(t)
+
 			subject, err := test.parameters.injectEnv(test.parameters.Email.Subject)
 			if err != nil {
 				t.Errorf("InjectEnv(subject) should not have raised an error %s", err)
 				t.FailNow()
 			}
+
 			if strings.Contains(subject, "<no value>") {
 				t.Errorf("InjectEnv(subject) failed to inject all environment variables %s", subject)
 			}
@@ -389,10 +392,12 @@ func TestInjectEnvSuccess(t *testing.T) {
 			} else {
 				body, err = test.parameters.injectEnv(string(test.parameters.Email.Text))
 			}
+
 			if err != nil {
 				t.Errorf("InjectEnv(body) should not have raised an error %s", err)
 				t.FailNow()
 			}
+
 			if strings.Contains(body, "<no value>") {
 				t.Errorf("InjectEnv(body) failed to inject all environment variables %s", body)
 			}
@@ -427,8 +432,10 @@ func TestInjectEnvBadVar(t *testing.T) {
 				t.Errorf("Validate() should not have raised an error: %s", err)
 				t.FailNow()
 			}
+
 			createMockEnv(t)
 			t.Setenv("SOME_OTHER_VARIABLE", "check")
+
 			subject, err := test.parameters.injectEnv(test.parameters.Email.Subject)
 
 			if err != nil {
