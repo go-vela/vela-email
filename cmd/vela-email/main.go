@@ -11,7 +11,7 @@ import (
 
 	"github.com/jordan-wright/email"
 	"github.com/sirupsen/logrus"
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 
 	"github.com/go-vela/vela-email/version"
 )
