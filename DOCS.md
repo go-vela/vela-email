@@ -204,7 +204,7 @@ The following parameters are used to configure the image:
 | `replyto`     | email address that will be used for replies                       | false    | N/A               | `PARAMETER_REPLYTO`<br/>`EMAIL_REPLYTO`         |
 | `subject`     | subject of the email                                              | false    | default subject   | `PARAMETER_SUBJECT`<br/>`EMAIL_SUBJECT`         |
 | `text`        | body of the email in plain text format (HTML will overwrite TEXT) | false    | N/A               | `PARAMETER_TEXT`<br/>`EMAIL_TEXT`               |
-| `html`        | body of the email in hmtl format (HTML will overwrite TEXT)       | false    | default html body | `PARAMETER_HTML`<br/>`EMAIL_HTML`               |
+| `html`        | body of the email in html format (HTML will overwrite TEXT)       | false    | default html body | `PARAMETER_HTML`<br/>`EMAIL_HTML`               |
 | `readreceipt` | delivery confirmation                                             | false    | N/A               | `PARAMETER_READRECEIPT`<br/>`EMAIL_READRECEIPT` |
 
 > **NOTE:**
