@@ -1,14 +1,14 @@
 module github.com/go-vela/vela-email
 
-go 1.25.7
+go 1.26.3
 
 require (
-	github.com/Masterminds/semver/v3 v3.4.0
+	github.com/Masterminds/semver/v3 v3.5.0
 	github.com/aymerick/douceur v0.2.0
-	github.com/go-vela/server v0.27.5
+	github.com/go-vela/server v0.28.8
 	github.com/jordan-wright/email v4.0.1-0.20210109023952-943e75fe5223+incompatible
-	github.com/sirupsen/logrus v1.9.4
-	github.com/urfave/cli/v3 v3.7.0
+	github.com/sirupsen/logrus v1.10.2
+	github.com/urfave/cli/v3 v3.14.0
 )
 
 require (
